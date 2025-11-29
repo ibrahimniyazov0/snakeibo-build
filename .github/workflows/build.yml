@@ -1,0 +1,41 @@
+# Bu iş axını AAB/APK yaratmaq üçün GitHub Actions istifadə edir.
+
+name: Build Snakeibo Android
+
+on:
+  push:
+    branches:
+      - main  # Dəyişikliklər yalnız 'main' budağına yükləndikdə işləyəcək
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      # Kivy üçün ən son Buildozer image-ni istifadə edin
+      image: kivy/buildozer:latest
+
+    steps:
+      - name: Checkout repo
+        # Git repozitoriyanızı çəkin
+        uses: actions/checkout@v4
+
+      - name: Build AAB
+        # Buildozer əmrlərini icra edin
+        run: |
+          buildozer android release
+          buildozer android p4a --private . --release aab
+
+      - name: Get Build Artifact Path
+        # Yaradılan AAB faylının yolunu tapın
+        id: get_artifact
+        run: |
+          BUILD_DIR=$(find bin -name "*.aab" | head -n 1)
+          echo "artifact_path=$BUILD_DIR" >> $GITHUB_OUTPUT
+
+      - name: Upload Artifact
+        # Yaradılan AAB faylını GitHub-a yükləyin
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snakeibo_Android_AAB_Release
+          path: ${{ steps.get_artifact.outputs.artifact_path }}
+          retention-days: 7
