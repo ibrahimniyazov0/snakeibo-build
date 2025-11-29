@@ -21,11 +21,11 @@ jobs:
 
       - name: Build AAB
         # Buildozer əmrlərini icra edin
-        # --add-recipe 'admob.py' ilə bizim xüsusi quraşdırma faylını əlavə edirik
+        # --force-root əlavə edirik ki, interaktiv sual yaranmasın.
         run: |
           buildozer android release clean
           # Xüsusi AdMob recipe'ni göstəririk
-          buildozer android p4a --private . --release aab --add-recipe admob.py 
+          buildozer android p4a --private . --release aab --add-recipe admob.py --force-root
 
       - name: Get Build Artifact Path
         # Yaradılan AAB faylının yolunu tapın
