@@ -1,5 +1,4 @@
 # Bu fayl Buildozer üçün AdMob kitabxanasının quraşdırılma qaydalarını müəyyən edir.
-# Bu Faylı buildozer.spec ilə eyni səviyyədə qoyun.
 
 from pythonforandroid.recipe import PythonRecipe
 from os.path import join
